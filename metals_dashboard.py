@@ -169,8 +169,19 @@ if model_choice == 'OLS Regression':
     
     with col1:
         st.markdown("### 📋 Regression Coefficients")
+        
+        # Create mapping for cleaner variable names
+        variable_names = {
+            'Intercept': 'Intercept',
+            'vix_lr': 'VIX Returns',
+            'usd_index_lr': 'USD Index Returns',
+            'wti_oil_lr': 'WTI Oil Returns',
+            'us10y_yield_change': 'Change in 10Y Yield',
+            'us2y_yield_change': 'Change in 2Y Yield'
+        }
+        
         coef_df = pd.DataFrame({
-            'Variable': model_ols.params.index,
+            'Variable': [variable_names.get(var, var) for var in model_ols.params.index],
             'Coefficient': model_ols.params.values,
             'Std Error': model_ols.bse.values,
             'P-value': model_ols.pvalues.values,
@@ -586,3 +597,9 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
+
+
+
+
+
+
