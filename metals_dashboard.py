@@ -14,6 +14,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
+from scipy import stats
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from statsmodels.tsa.arima.model import ARIMA
@@ -249,7 +250,6 @@ with tab1:
         fig.add_hline(y=0, line_dash="dash", line_color="red", line_width=2, row=1, col=1)
         
         # Q-Q plot
-        from scipy import stats
         (osm, osr), (slope, intercept, r) = stats.probplot(model_ols.resid, dist="norm")
         fig.add_trace(
             go.Scatter(
@@ -688,7 +688,7 @@ with tab3:
     # Create nicer labels
     labels = ['Gold', 'Silver', 'Platinum', 'Palladium', 'VIX', 'USD Index']
     
-    # Create heatmap with improved settings
+    # Create heatmap
     fig = go.Figure(data=go.Heatmap(
         z=corr_matrix.values,
         x=labels,
@@ -697,36 +697,23 @@ with tab3:
         zmid=0,
         zmin=-1,
         zmax=1,
-        text=np.round(corr_matrix.values, 3),
+        text=[[f'{val:.3f}' for val in row] for row in corr_matrix.values],
         texttemplate='%{text}',
-        textfont={"size": 14, "color": "black"},
-        colorbar=dict(
-            title="Correlation",
-            titleside="right",
-            tickmode="linear",
-            tick0=-1,
-            dtick=0.5
-        ),
-        hovertemplate='%{y} vs %{x}<br>Correlation: %{z:.3f}<extra></extra>'
+        textfont={"size": 14},
+        hovertemplate='%{y} vs %{x}<br>Correlation: %{z:.3f}<extra></extra>',
+        showscale=True
     ))
     
     fig.update_layout(
         title=dict(
             text='Asset Correlation Matrix',
-            font=dict(size=18, color='#333', family='Arial Black')
+            font=dict(size=18, color='#333')
         ),
         template='plotly_white',
         height=600,
-        width=800,
-        xaxis=dict(
-            side='bottom',
-            tickangle=0
-        ),
-        yaxis=dict(
-            side='left',
-            autorange='reversed'
-        ),
-        margin=dict(l=100, r=100, t=100, b=100)
+        xaxis=dict(side='bottom'),
+        yaxis=dict(side='left', autorange='reversed'),
+        margin=dict(l=80, r=80, t=80, b=80)
     )
     
     st.plotly_chart(fig, use_container_width=True)
@@ -750,7 +737,3 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
-
-
-
-
