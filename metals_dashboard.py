@@ -300,25 +300,11 @@ if model_choice == 'OLS Regression':
             impact_10pct = vix_coef * 10
             
             if vix_coef > 0:
-                if abs(vix_coef) < 0.01:
-                    magnitude = "weakly positive"
-                elif abs(vix_coef) < 0.05:
-                    magnitude = "moderately positive"
-                else:
-                    magnitude = "strongly positive"
-                    
-                st.success(f"**{magnitude.title()} Response to Volatility** ✅\n\n{metal_choice.title()} exhibits a {magnitude} relationship with market volatility.\n\n**Coefficient:** {vix_coef:.4f}\n\n**Interpretation:** When VIX increases by 10%, {metal_choice} returns change by {impact_10pct:+.3f}%.")
+                st.success(f"**Positive Response to Volatility** ✅\n\n{metal_choice.title()} moves with market volatility.\n\n**VIX Coefficient:** {vix_coef:.4f}\n\n**Interpretation:** When VIX rises by 10%, {metal_choice} returns typically change by {impact_10pct:+.3f}%.")
             else:
-                if abs(vix_coef) < 0.01:
-                    magnitude = "weakly negative"
-                elif abs(vix_coef) < 0.05:
-                    magnitude = "moderately negative"
-                else:
-                    magnitude = "strongly negative"
-                    
-                st.warning(f"**{magnitude.title()} Response to Volatility** ⚠️\n\n{metal_choice.title()} exhibits a {magnitude} relationship with market volatility.\n\n**Coefficient:** {vix_coef:.4f}\n\n**Interpretation:** When VIX increases by 10%, {metal_choice} returns change by {impact_10pct:+.3f}%.")
+                st.warning(f"**Negative Response to Volatility** ⚠️\n\n{metal_choice.title()} moves against market volatility.\n\n**VIX Coefficient:** {vix_coef:.4f}\n\n**Interpretation:** When VIX rises by 10%, {metal_choice} returns typically change by {impact_10pct:+.3f}%.")
         else:
-            st.info(f"**No Significant Response to Volatility**\n\n{metal_choice.title()} does not show a statistically significant relationship with market volatility.\n\n**Coefficient:** {vix_coef:.4f}\n**P-value:** {vix_pval:.4f}\n\n*Changes in VIX do not significantly explain {metal_choice} returns.*")
+            st.info(f"**No Significant Response to Volatility**\n\n{metal_choice.title()} does not show a statistically significant relationship with market volatility.\n\n**VIX Coefficient:** {vix_coef:.4f}\n**P-value:** {vix_pval:.4f}\n\n*Changes in VIX do not significantly explain {metal_choice} returns.*")
         
         st.metric("🎲 Durbin-Watson", f"{sm.stats.stattools.durbin_watson(model_ols.resid):.3f}", 
                  help="Tests for autocorrelation. ~2.0 is ideal")
@@ -727,3 +713,4 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
+
