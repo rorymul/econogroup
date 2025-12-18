@@ -207,7 +207,7 @@ model_choice = st.sidebar.radio(
 # Main content
 if model_choice == 'OLS Regression':
     st.markdown(f"## 📊 OLS Regression Analysis: {metal_choice.upper()}")
-    st.info("💡 **Objective:** Analyze how this metal responds to market stress indicators (VIX, USD, Oil, Yields)")
+    st.info("💡 **Objective:** Analyse how this metal responds to market stress indicators (VIX, USD, Oil, Yields)")
     
     # Prepare data
     data_metal = df[[f'{metal_choice}_lr', 'vix_lr', 'usd_index_lr', 'wti_oil_lr', 
@@ -475,8 +475,8 @@ elif model_choice == 'ARIMA Forecasting':
     
     st.markdown("---")
     
-    # Forecast visualization
-    st.markdown("### 📊 Forecast Visualization")
+    # Forecast visualisation
+    st.markdown("### 📊 Forecast Visualisation")
     
     fig = go.Figure()
     
@@ -632,7 +632,7 @@ else:  # GARCH
     
     st.markdown("---")
     
-    # Volatility visualization
+    # Volatility visualisation
     st.markdown("### 📈 Volatility Analysis")
     
     cond_vol = garch_fitted.conditional_volatility
