@@ -11,6 +11,7 @@ import numpy as np
 import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
+import plotly.io as pio
 from datetime import datetime, timedelta
 from scipy import stats
 import statsmodels.api as sm
@@ -19,6 +20,9 @@ from statsmodels.tsa.arima.model import ARIMA
 from arch import arch_model
 import warnings
 warnings.filterwarnings('ignore')
+
+# Force Plotly to use light theme only
+pio.templates.default = "plotly_white"
 
 # Page config
 st.set_page_config(
@@ -31,13 +35,22 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
-    /* Force light mode */
+    /* FORCE LIGHT MODE - Override everything */
     :root {
-        color-scheme: light !important;
+        color-scheme: light only !important;
     }
     
+    /* Override system preferences */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            color-scheme: light !important;
+        }
+    }
+    
+    /* Main containers */
     [data-testid="stAppViewContainer"] {
         background-color: white !important;
+        color: #262730 !important;
     }
     
     [data-testid="stHeader"] {
@@ -50,25 +63,95 @@ st.markdown("""
     
     .main {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #262730 !important;
     }
     
-    /* Ensure all text is readable in light mode */
-    .stMarkdown, .stText, p, span, div {
+    /* Force all text to be dark */
+    .stMarkdown, .stText, p, span, div, h1, h2, h3, h4, h5, h6, label {
+        color: #262730 !important;
+    }
+    
+    /* DataFrames and Tables - FORCE WHITE BACKGROUND */
+    [data-testid="stDataFrame"], 
+    [data-testid="stTable"],
+    .dataframe,
+    table {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    .dataframe thead tr th {
+        background-color: #f0f2f6 !important;
+        color: #262730 !important;
+    }
+    
+    .dataframe tbody tr td {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    /* Plotly charts - force light background */
+    .js-plotly-plot,
+    .plotly,
+    .plot-container {
+        background-color: white !important;
+    }
+    
+    /* Info/Warning/Success boxes */
+    [data-testid="stAlert"],
+    .stAlert {
+        color: #262730 !important;
+    }
+    
+    /* Metrics */
+    [data-testid="stMetric"],
+    .stMetric {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    [data-testid="stMetricLabel"],
+    [data-testid="stMetricValue"] {
+        color: #262730 !important;
+    }
+    
+    /* Expander */
+    [data-testid="stExpander"] {
+        background-color: white !important;
         color: #262730 !important;
     }
     
     /* Button styling */
     .stButton>button {
-        background-color: #FFD700;
-        color: black;
+        background-color: #FFD700 !important;
+        color: black !important;
         font-weight: bold;
         border-radius: 10px;
         border: 3px solid #FFA500;
         padding: 10px 24px;
     }
     .stButton>button:hover {
-        background-color: #FFA500;
+        background-color: #FFA500 !important;
         transform: scale(1.05);
+    }
+    
+    /* Selectbox, slider, and other inputs */
+    [data-baseweb="select"],
+    [data-testid="stSelectbox"],
+    input, select, textarea {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    /* Spinner */
+    [data-testid="stSpinner"] {
+        color: #262730 !important;
+    }
+    
+    /* Code blocks */
+    code, pre {
+        background-color: #f0f2f6 !important;
+        color: #262730 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -207,7 +290,7 @@ model_choice = st.sidebar.radio(
 # Main content
 if model_choice == 'OLS Regression':
     st.markdown(f"## 📊 OLS Regression Analysis: {metal_choice.upper()}")
-    st.info("💡 **Objective:** Analyse how this metal responds to market stress indicators (VIX, USD, Oil, Yields)")
+    st.info("💡 **Objective:** Analyze how this metal responds to market stress indicators (VIX, USD, Oil, Yields)")
     
     # Prepare data
     data_metal = df[[f'{metal_choice}_lr', 'vix_lr', 'usd_index_lr', 'wti_oil_lr', 
@@ -475,8 +558,8 @@ elif model_choice == 'ARIMA Forecasting':
     
     st.markdown("---")
     
-    # Forecast visualisation
-    st.markdown("### 📊 Forecast Visualisation")
+    # Forecast visualization
+    st.markdown("### 📊 Forecast Visualization")
     
     fig = go.Figure()
     
@@ -632,7 +715,7 @@ else:  # GARCH
     
     st.markdown("---")
     
-    # Volatility visualisation
+    # Volatility visualization
     st.markdown("### 📈 Volatility Analysis")
     
     cond_vol = garch_fitted.conditional_volatility
