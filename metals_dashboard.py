@@ -424,70 +424,8 @@ if model_choice == 'OLS Regression':
             else:
                 return ['background-color: #f8d7da'] * len(row)
         
-        # Create HTML table with inline styles to force light mode on mobile
-        html_table = """
-        <style>
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white !important;
-        }
-        .custom-table thead {
-            background-color: #f0f2f6 !important;
-        }
-        .custom-table th {
-            background-color: #f0f2f6 !important;
-            color: #262730 !important;
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-            font-weight: bold;
-        }
-        .custom-table td {
-            background-color: white !important;
-            color: #000000 !important;
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        .custom-table tbody tr.significant {
-            background-color: #d4edda !important;
-        }
-        .custom-table tbody tr.not-significant {
-            background-color: #f8d7da !important;
-        }
-        </style>
-        <table class="custom-table">
-        <thead>
-            <tr>
-                <th>Variable</th>
-                <th>Coefficient</th>
-                <th>Std Error</th>
-                <th>P-value</th>
-                <th>Significant</th>
-            </tr>
-        </thead>
-        <tbody>
-        """
-        
-        for idx, row in coef_df.iterrows():
-            row_class = "significant" if '✅' in row['Significant'] else "not-significant"
-            html_table += f"""
-            <tr class="{row_class}">
-                <td style="color: #000000 !important;">{row['Variable']}</td>
-                <td style="color: #000000 !important;">{row['Coefficient']}</td>
-                <td style="color: #000000 !important;">{row['Std Error']}</td>
-                <td style="color: #000000 !important;">{row['P-value']}</td>
-                <td style="color: #000000 !important;">{row['Significant']}</td>
-            </tr>
-            """
-        
-        html_table += """
-        </tbody>
-        </table>
-        """
-        
-        st.markdown(html_table, unsafe_allow_html=True)
+        styled_df = coef_df.style.apply(highlight_significant, axis=1)
+        st.dataframe(styled_df, use_container_width=True, hide_index=True)
     
     with col2:
         st.markdown("### 🧠 Key Insights")
