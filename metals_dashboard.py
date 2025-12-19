@@ -429,7 +429,9 @@ if model_choice == 'OLS Regression':
         height=400,
         showlegend=True,
         template='plotly_white',
-        hovermode='closest'
+        hovermode='closest',
+        paper_bgcolor='white',
+        plot_bgcolor='white'
     )
     
     st.plotly_chart(fig, use_container_width=True)
@@ -573,7 +575,9 @@ elif model_choice == 'ARIMA Forecasting':
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         xaxis=dict(showgrid=True, gridcolor='LightGray'),
-        yaxis=dict(showgrid=True, gridcolor='LightGray', zeroline=True)
+        yaxis=dict(showgrid=True, gridcolor='LightGray', zeroline=True),
+        paper_bgcolor='white',
+        plot_bgcolor='white'
     )
     
     st.plotly_chart(fig, use_container_width=True)
@@ -735,7 +739,9 @@ else:  # GARCH
         height=700,
         template='plotly_white',
         showlegend=True,
-        hovermode='x unified'
+        hovermode='x unified',
+        paper_bgcolor='white',
+        plot_bgcolor='white'
     )
     
     st.plotly_chart(fig, use_container_width=True)
