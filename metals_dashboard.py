@@ -69,7 +69,7 @@ st.markdown("""
         color: #262730 !important;
     }
     
-    /* DataFrames and Tables */
+    /* DataFrames and Tables - AGGRESSIVE */
     [data-testid="stDataFrame"], 
     [data-testid="stTable"],
     .dataframe,
@@ -78,14 +78,24 @@ st.markdown("""
         color: #262730 !important;
     }
     
-    .dataframe thead tr th {
+    /* Table headers - force light gray background and dark text */
+    .dataframe thead,
+    .dataframe thead tr,
+    .dataframe thead tr th,
+    thead,
+    th {
         background-color: #f0f2f6 !important;
         color: #262730 !important;
+        border-color: #ddd !important;
     }
     
-    .dataframe tbody tr td {
+    /* Table body cells */
+    .dataframe tbody tr td,
+    tbody,
+    td {
         background-color: white !important;
         color: #262730 !important;
+        border-color: #ddd !important;
     }
     
     /* Info/Warning/Success boxes */
@@ -118,9 +128,43 @@ st.markdown("""
         transform: scale(1.05);
     }
     
-    /* Inputs */
+    /* Selectbox and Dropdown - FORCE LIGHT MODE */
     [data-testid="stSelectbox"],
+    [data-baseweb="select"],
+    [data-baseweb="popover"],
+    [role="listbox"],
+    [role="option"] {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    /* Dropdown menu items */
+    [data-baseweb="select"] > div,
+    [data-baseweb="select"] ul,
+    [data-baseweb="select"] li {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    /* Input fields */
     input, select, textarea {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    /* Force all selects to have white background */
+    select {
+        background-color: white !important;
+        color: #262730 !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    /* Streamlit selectbox specifically */
+    div[data-baseweb="select"] {
+        background-color: white !important;
+    }
+    
+    div[data-baseweb="select"] > div {
         background-color: white !important;
         color: #262730 !important;
     }
@@ -431,7 +475,8 @@ if model_choice == 'OLS Regression':
         template='plotly_white',
         hovermode='closest',
         paper_bgcolor='white',
-        plot_bgcolor='white'
+        plot_bgcolor='white',
+        font=dict(color='#262730', size=12)
     )
     
     st.plotly_chart(fig, use_container_width=True)
@@ -565,7 +610,7 @@ elif model_choice == 'ARIMA Forecasting':
     fig.update_layout(
         title=dict(
             text=f'{metal_choice.title()} Returns Forecast - ARMA({best_p},{best_q})',
-            font=dict(size=18, color='#333')
+            font=dict(size=18, color='#262730')
         ),
         xaxis_title='Date',
         yaxis_title='Return (%)',
@@ -577,7 +622,8 @@ elif model_choice == 'ARIMA Forecasting':
         xaxis=dict(showgrid=True, gridcolor='LightGray'),
         yaxis=dict(showgrid=True, gridcolor='LightGray', zeroline=True),
         paper_bgcolor='white',
-        plot_bgcolor='white'
+        plot_bgcolor='white',
+        font=dict(color='#262730', size=12)
     )
     
     st.plotly_chart(fig, use_container_width=True)
@@ -741,7 +787,8 @@ else:  # GARCH
         showlegend=True,
         hovermode='x unified',
         paper_bgcolor='white',
-        plot_bgcolor='white'
+        plot_bgcolor='white',
+        font=dict(color='#262730', size=12)
     )
     
     st.plotly_chart(fig, use_container_width=True)
