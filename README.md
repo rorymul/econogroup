@@ -194,15 +194,6 @@ Select your analysis type:
 
 ---
 
-## 🎓 Academic Context
-
-### Assignment Requirements
-This dashboard fulfills the requirements for:
-- Interactive data visualization ✓
-- Multiple econometric models ✓
-- Professional presentation ✓
-- Interpretable results ✓
-
 ### Methodology
 - **Data Processing**: Log returns for normality
 - **Statistical Testing**: Significance tests, diagnostic checks
@@ -225,9 +216,6 @@ This dashboard fulfills the requirements for:
 - ARIMA assumes stationarity of returns
 - OLS assumes linear relationships
 
-### Disclaimer
-> **For educational purposes only**. This dashboard is a student project for FIN41660 Financial Econometrics. Results should not be used for actual trading or investment decisions. Past performance does not guarantee future results.
-
 ---
 
 ## 🛠️ Troubleshooting
@@ -243,7 +231,7 @@ This dashboard fulfills the requirements for:
 **Issue**: Slow loading  
 **Solution**: Initial data download takes 10-20 seconds; cached after first load
 
-**Issue**: Dark mode table headers on iPad  
+**Issue**: Tables colours make it difficult to read  
 **Solution**: Switch device to light mode for optimal viewing
 
 ---
@@ -259,40 +247,6 @@ metals-dashboard/
 
 ---
 
-## 👥 Contributors
 
-**FIN41660 Group Project**  
-University College Dublin  
-MSc in Quantitative Finance
 
----
-
-## 📝 License
-
-This project is submitted as academic coursework for University College Dublin.  
-© 2025 - For educational use only.
-
----
-
-## 🙏 Acknowledgments
-
-- **Data Source**: Yahoo Finance
-- **Framework**: Streamlit
-- **Statistical Libraries**: statsmodels, arch
-- **Visualization**: Plotly
-- **Course**: FIN41660 Financial Econometrics, UCD
-
----
-
-## 📞 Support
-
-For technical issues or questions about the dashboard:
-1. Check this README first
-2. Review the code comments in `metals_dashboard.py`
-3. Consult course materials for econometric methodology
-
----
-
-**Last Updated**: December 19, 2025  
-**Version**: 1.0  
-**Status**: ✅ Ready for Submission
+Streamlit file and README.md files were coded solely using CLAUDE on December 16th 2025, CLAUDE was given the ipynb file, and was asked to create a dashboard showing off the information that the file analysis
