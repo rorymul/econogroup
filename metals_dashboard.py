@@ -32,12 +32,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Add meta tag to force light color scheme
-st.markdown("""
-    <meta name="color-scheme" content="light only">
-    <meta name="supported-color-schemes" content="light">
-""", unsafe_allow_html=True)
-
 # Custom CSS
 st.markdown("""
     <style>
@@ -852,4 +846,3 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
-
