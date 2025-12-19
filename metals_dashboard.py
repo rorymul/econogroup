@@ -35,38 +35,21 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
-    /* FORCE LIGHT MODE - Override everything including mobile */
+    /* Force light mode */
     :root {
-        color-scheme: light only !important;
-        -webkit-color-scheme: light only !important;
+        color-scheme: light !important;
     }
     
-    /* Override system preferences for ALL devices */
+    /* Override system dark mode preference */
     @media (prefers-color-scheme: dark) {
         :root {
             color-scheme: light !important;
-            -webkit-color-scheme: light !important;
         }
-        
-        body, html {
-            background-color: white !important;
-            color: #262730 !important;
-        }
-    }
-    
-    /* Force body and html to be white */
-    body, html {
-        background-color: white !important;
-        color: #262730 !important;
     }
     
     /* Main containers */
-    [data-testid="stAppViewContainer"],
-    .stApp,
-    .main,
-    section {
+    [data-testid="stAppViewContainer"] {
         background-color: white !important;
-        color: #262730 !important;
     }
     
     [data-testid="stHeader"] {
@@ -78,25 +61,19 @@ st.markdown("""
     }
     
     .main {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    /* Force text colors */
+    .stMarkdown, .stText, p, span, div, h1, h2, h3, h4, h5, h6, label {
         color: #262730 !important;
     }
     
-    /* Force all text to be dark */
-    .stMarkdown, .stText, p, span, div, h1, h2, h3, h4, h5, h6, label, li, a {
-        color: #262730 !important;
-    }
-    
-    /* DataFrames and Tables - FORCE WHITE BACKGROUND */
+    /* DataFrames and Tables */
     [data-testid="stDataFrame"], 
     [data-testid="stTable"],
     .dataframe,
-    table,
-    thead,
-    tbody,
-    tr,
-    td,
-    th {
+    table {
         background-color: white !important;
         color: #262730 !important;
     }
@@ -111,44 +88,19 @@ st.markdown("""
         color: #262730 !important;
     }
     
-    /* Plotly charts - force light background aggressively */
-    .js-plotly-plot,
-    .plotly,
-    .plot-container,
-    .plotly .svg-container,
-    .plotly .main-svg {
-        background-color: white !important;
-        background: white !important;
-    }
-    
-    /* Force plotly plot areas */
-    .plotly .bg {
-        fill: white !important;
-    }
-    
     /* Info/Warning/Success boxes */
-    [data-testid="stAlert"],
-    .stAlert,
-    [data-testid="stNotification"] {
+    [data-testid="stAlert"] {
         color: #262730 !important;
     }
     
     /* Metrics */
-    [data-testid="stMetric"],
-    .stMetric {
+    [data-testid="stMetric"] {
         background-color: white !important;
         color: #262730 !important;
     }
     
     [data-testid="stMetricLabel"],
-    [data-testid="stMetricValue"],
-    [data-testid="stMetricDelta"] {
-        color: #262730 !important;
-    }
-    
-    /* Expander */
-    [data-testid="stExpander"] {
-        background-color: white !important;
+    [data-testid="stMetricValue"] {
         color: #262730 !important;
     }
     
@@ -166,43 +118,11 @@ st.markdown("""
         transform: scale(1.05);
     }
     
-    /* Selectbox, slider, and other inputs */
-    [data-baseweb="select"],
+    /* Inputs */
     [data-testid="stSelectbox"],
-    input, select, textarea,
-    [data-baseweb="input"],
-    [role="listbox"],
-    [role="option"] {
+    input, select, textarea {
         background-color: white !important;
         color: #262730 !important;
-    }
-    
-    /* Radio buttons */
-    [data-testid="stRadio"] label {
-        color: #262730 !important;
-    }
-    
-    /* Spinner */
-    [data-testid="stSpinner"] {
-        color: #262730 !important;
-    }
-    
-    /* Code blocks */
-    code, pre {
-        background-color: #f0f2f6 !important;
-        color: #262730 !important;
-    }
-    
-    /* Mobile-specific overrides for iOS Safari */
-    @supports (-webkit-touch-callout: none) {
-        body, html, * {
-            background-color: white !important;
-            color: #262730 !important;
-        }
-        
-        [data-testid="stAppViewContainer"] {
-            background: white !important;
-        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -846,4 +766,3 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
-
