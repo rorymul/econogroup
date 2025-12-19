@@ -530,7 +530,7 @@ elif model_choice == 'ARIMA Forecasting':
     st.info("💡 **Objective:** Forecast future returns using AutoRegressive Integrated Moving Average models")
     
     # Prepare data
-    returns = df[f'{metal_choice}_lr'].dropna()
+    returns = returns.asfreq('B').dropna()
     
     # Check if we have data
     if len(returns) < 100:
@@ -723,11 +723,11 @@ elif model_choice == 'ARIMA Forecasting':
     # Show last 20 days of test period
     display_days = min(20, len(test))
     forecast_df = pd.DataFrame({
-        'Date': test.index[-display_days:].strftime('%Y-%m-%d'),
-        'Actual Return (%)': (test.values[-display_days:] * 100).round(4),
-        'Forecast Return (%)': (forecast_test.values[-display_days:] * 100).round(4),
-        'Forecast Error (%)': ((test.values[-display_days:] - forecast_test.values[-display_days:]) * 100).round(4)
-    })
+    'Date': test.index[-display_days:].strftime('%Y-%m-%d'),
+    'Actual Return (%)': (test.values[-display_days:] * 100).round(4),
+    'Forecast Return (%)': (forecast_test.values[-display_days:] * 100).round(4),
+    'Forecast Error (%)': ((test.values[-display_days:] - forecast_test.values[-display_days:]) * 100).round(4)
+})
     
     # Color code errors
     def color_errors(val):
@@ -744,10 +744,9 @@ elif model_choice == 'ARIMA Forecasting':
     st.markdown(f"*Showing last {display_days} days of {len(test)} day test period*")
     
     # Summary metrics - OOS performance
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(4)
     avg_actual = test.mean() * 100
     avg_forecast = forecast_test.mean() * 100
-    mae = np.abs(test.values - forecast_test.values).mean() * 100
     rmse = np.sqrt(mse) * 100
     
     with col1:
@@ -755,8 +754,6 @@ elif model_choice == 'ARIMA Forecasting':
     with col2:
         st.metric("📈 Avg Forecast Return", f"{avg_forecast:.3f}%")
     with col3:
-        st.metric("📉 MAE", f"{mae:.3f}%", help="Mean Absolute Error")
-    with col4:
         st.metric("🎯 RMSE", f"{rmse:.3f}%", help="Root Mean Squared Error")
 
 else:  # GARCH
