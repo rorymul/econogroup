@@ -723,11 +723,11 @@ returns = returns.asfreq('B').dropna()
     # Show last 20 days of test period
     display_days = min(20, len(test))
     forecast_df = pd.DataFrame({
-    'Date': test.index[-display_days:].strftime('%Y-%m-%d'),
-    'Actual Return (%)': (test.values[-display_days:] * 100).round(4),
-    'Forecast Return (%)': (forecast_test.values[-display_days:] * 100).round(4),
-    'Forecast Error (%)': ((test.values[-display_days:] - forecast_test.values[-display_days:]) * 100).round(4)
-})
+        'Date': test.index[-display_days:].strftime('%Y-%m-%d'),
+        'Actual Return (%)': (test.values[-display_days:] * 100).round(4),
+        'Forecast Return (%)': (forecast_test.values[-display_days:] * 100).round(4),
+        'Forecast Error (%)': ((test.values[-display_days:] - forecast_test.values[-display_days:]) * 100).round(4)
+        })
     
     # Color code errors
     def color_errors(val):
