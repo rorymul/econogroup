@@ -680,8 +680,18 @@ elif model_choice == 'ARIMA Forecasting':
     ))
     
     # Add vertical line at train/test split
-    fig.add_vline(x=split_date, line_dash="dot", line_color="red", 
-                  annotation_text="Train/Test Split", annotation_position="top")
+    fig.add_vline(x=split_date, line_dash="dot", line_color="red", line_width=2)
+    
+    # Add annotation for the split line
+    fig.add_annotation(
+        x=split_date,
+        y=1,
+        yref="paper",
+        text="Train/Test Split",
+        showarrow=False,
+        yshift=10,
+        font=dict(color="red", size=12)
+    )
     
     # Zero line
     fig.add_hline(y=0, line_dash="dot", line_color="gray", opacity=0.5)
