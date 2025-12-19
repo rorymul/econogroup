@@ -530,6 +530,7 @@ elif model_choice == 'ARIMA Forecasting':
     st.info("💡 **Objective:** Forecast future returns using AutoRegressive Integrated Moving Average models")
     
     # Prepare data
+    returns = df[f'{metal_choice}_lr'].dropna()
     returns = returns.asfreq('B').dropna()
     
     # Check if we have data
