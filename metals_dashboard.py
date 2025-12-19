@@ -78,22 +78,44 @@ st.markdown("""
         color: #262730 !important;
     }
     
-    /* Table headers - force light gray background and dark text */
+    /* Table headers - ULTRA AGGRESSIVE - force light gray background and dark text */
     .dataframe thead,
     .dataframe thead tr,
     .dataframe thead tr th,
+    .dataframe th,
     thead,
-    th {
+    thead tr,
+    thead tr th,
+    th,
+    .stDataFrame thead,
+    .stDataFrame thead tr,
+    .stDataFrame thead tr th,
+    [data-testid="stDataFrame"] thead,
+    [data-testid="stDataFrame"] thead tr,
+    [data-testid="stDataFrame"] thead tr th,
+    [data-testid="stDataFrame"] th {
         background-color: #f0f2f6 !important;
+        background: #f0f2f6 !important;
         color: #262730 !important;
         border-color: #ddd !important;
     }
     
     /* Table body cells */
     .dataframe tbody tr td,
+    .dataframe td,
     tbody,
-    td {
+    tbody tr,
+    tbody tr td,
+    td,
+    .stDataFrame tbody,
+    .stDataFrame tbody tr,
+    .stDataFrame tbody tr td,
+    [data-testid="stDataFrame"] tbody,
+    [data-testid="stDataFrame"] tbody tr,
+    [data-testid="stDataFrame"] tbody tr td,
+    [data-testid="stDataFrame"] td {
         background-color: white !important;
+        background: white !important;
         color: #262730 !important;
         border-color: #ddd !important;
     }
@@ -464,10 +486,14 @@ if model_choice == 'OLS Regression':
         row=1, col=2
     )
     
-    fig.update_xaxes(title_text="Date", row=1, col=1, showgrid=True, gridcolor='LightGray')
-    fig.update_xaxes(title_text="Theoretical Quantiles", row=1, col=2, showgrid=True, gridcolor='LightGray')
-    fig.update_yaxes(title_text="Residuals", row=1, col=1, showgrid=True, gridcolor='LightGray')
-    fig.update_yaxes(title_text="Sample Quantiles", row=1, col=2, showgrid=True, gridcolor='LightGray')
+    fig.update_xaxes(title_text="Date", row=1, col=1, showgrid=True, gridcolor='LightGray', 
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
+    fig.update_xaxes(title_text="Theoretical Quantiles", row=1, col=2, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
+    fig.update_yaxes(title_text="Residuals", row=1, col=1, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
+    fig.update_yaxes(title_text="Sample Quantiles", row=1, col=2, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
     
     fig.update_layout(
         height=400,
@@ -619,8 +645,8 @@ elif model_choice == 'ARIMA Forecasting':
         height=500,
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        xaxis=dict(showgrid=True, gridcolor='LightGray'),
-        yaxis=dict(showgrid=True, gridcolor='LightGray', zeroline=True),
+        xaxis=dict(showgrid=True, gridcolor='LightGray', title_font=dict(color='#262730'), tickfont=dict(color='#262730')),
+        yaxis=dict(showgrid=True, gridcolor='LightGray', zeroline=True, title_font=dict(color='#262730'), tickfont=dict(color='#262730')),
         paper_bgcolor='white',
         plot_bgcolor='white',
         font=dict(color='#262730', size=12)
@@ -776,10 +802,14 @@ else:  # GARCH
         row=2, col=1
     )
     
-    fig.update_xaxes(title_text="Date", row=1, col=1, showgrid=True, gridcolor='LightGray')
-    fig.update_xaxes(title_text="Date", row=2, col=1, showgrid=True, gridcolor='LightGray')
-    fig.update_yaxes(title_text="Volatility (%)", row=1, col=1, showgrid=True, gridcolor='LightGray')
-    fig.update_yaxes(title_text="Volatility (%)", row=2, col=1, showgrid=True, gridcolor='LightGray')
+    fig.update_xaxes(title_text="Date", row=1, col=1, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
+    fig.update_xaxes(title_text="Date", row=2, col=1, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
+    fig.update_yaxes(title_text="Volatility (%)", row=1, col=1, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
+    fig.update_yaxes(title_text="Volatility (%)", row=2, col=1, showgrid=True, gridcolor='LightGray',
+                     title_font=dict(color='#262730'), tickfont=dict(color='#262730'))
     
     fig.update_layout(
         height=700,
