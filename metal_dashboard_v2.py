@@ -530,7 +530,7 @@ elif model_choice == 'ARIMA Forecasting':
     st.info("💡 **Objective:** Forecast future returns using AutoRegressive Integrated Moving Average models")
     
     # Prepare data
-    returns = returns.asfreq('B').dropna()
+returns = returns.asfreq('B').dropna()
     
     # Check if we have data
     if len(returns) < 100:
@@ -744,7 +744,7 @@ elif model_choice == 'ARIMA Forecasting':
     st.markdown(f"*Showing last {display_days} days of {len(test)} day test period*")
     
     # Summary metrics - OOS performance
-    col1, col2, col3 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
     avg_actual = test.mean() * 100
     avg_forecast = forecast_test.mean() * 100
     rmse = np.sqrt(mse) * 100
