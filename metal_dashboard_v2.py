@@ -543,12 +543,9 @@ elif model_choice == 'ARIMA Forecasting':
         st.info("Attempting to continue without frequency setting...")
         pass
     
-    # Forecast settings
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        forecast_days = st.slider("📅 Forecast Horizon (business days):", 5, 30, 10)
-    with col2:
-        st.metric("📊 Data Points", f"{len(returns):,}")
+    # Display data info
+    st.metric("📊 Total Data Points", f"{len(returns):,}")
+    st.info("**Train/Test Split:** Last 252 trading days (≈1 year) reserved for out-of-sample testing")
     
     st.markdown("---")
     
@@ -612,75 +609,86 @@ elif model_choice == 'ARIMA Forecasting':
         st.markdown("---")
         st.info(f"**AR({best_p})**: Uses {best_p} lag(s)\n\n**MA({best_q})**: Uses {best_q} error term(s)")
     
-    # Fit best model and forecast
-    best_model = ARIMA(returns, order=(best_p, 0, best_q))
-    best_fitted = best_model.fit()
+    # Train/Test Split for Out-of-Sample Forecasting (like notebook)
+    # Use last year (252 trading days) as test set
+    split_date = returns.index[-252]
+    train = returns.loc[:split_date]
+    test = returns.loc[split_date:]
     
-    # Use get_forecast() method like in notebook
-    forecast_obj = best_fitted.get_forecast(steps=forecast_days)
-    forecast = forecast_obj.predicted_mean
-    forecast_ci = forecast_obj.conf_int()
+    # Fit model on training data only
+    model_train = ARIMA(train, order=(best_p, 0, best_q))
+    fit_train = model_train.fit()
+    
+    # Forecast on test period
+    forecast_test = fit_train.forecast(steps=len(test))
+    forecast_test.index = test.index
+    
+    # Calculate MSE for out-of-sample evaluation
+    from sklearn.metrics import mean_squared_error
+    eval_df = pd.concat([test, forecast_test], axis=1)
+    eval_df.columns = ["actual", "forecast"]
+    eval_df = eval_df.dropna()
+    mse = mean_squared_error(eval_df["actual"], eval_df["forecast"])
     
     st.markdown("---")
     
-    # Forecast visualization
-    st.markdown("### 📊 Forecast Visualization")
+    # Display OOS Performance
+    st.markdown("### 📈 Out-of-Sample Performance")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Training Period", f"{train.index[0].strftime('%Y-%m-%d')} to {train.index[-1].strftime('%Y-%m-%d')}")
+    with col2:
+        st.metric("Test Period", f"{test.index[0].strftime('%Y-%m-%d')} to {test.index[-1].strftime('%Y-%m-%d')}")
+    with col3:
+        st.metric("OOS MSE", f"{mse:.6f}")
+    
+    st.markdown("---")
+    
+    # Forecast visualization - Out-of-Sample
+    st.markdown("### 📊 Out-of-Sample Forecast vs Actual")
     
     fig = go.Figure()
     
-    # Historical data (last 252 days)
-    historical = returns.iloc[-252:]
+    # Training data
     fig.add_trace(go.Scatter(
-        x=historical.index,
-        y=historical.values * 100,  # Convert to percentage
+        x=train.index,
+        y=train.values * 100,  # Convert to percentage
         mode='lines',
-        name='Historical Returns',
+        name='Training Data',
         line=dict(color='steelblue', width=2),
         hovertemplate='Date: %{x}<br>Return: %{y:.3f}%<extra></extra>'
     ))
     
-    # Forecast with confidence intervals
-    future_dates = pd.date_range(returns.index[-1] + timedelta(days=1), periods=forecast_days, freq='B')
-    
-    # Add confidence interval bands
+    # Actual test data (realized returns)
     fig.add_trace(go.Scatter(
-        x=future_dates,
-        y=forecast_ci.iloc[:, 1] * 100,  # Upper bound
+        x=test.index,
+        y=test.values * 100,
         mode='lines',
-        name='Upper CI (95%)',
-        line=dict(width=0),
-        showlegend=False,
-        hoverinfo='skip'
+        name='Actual (Realized)',
+        line=dict(color='green', width=2),
+        hovertemplate='Date: %{x}<br>Actual: %{y:.3f}%<extra></extra>'
     ))
     
+    # Forecast on test period
     fig.add_trace(go.Scatter(
-        x=future_dates,
-        y=forecast_ci.iloc[:, 0] * 100,  # Lower bound
+        x=forecast_test.index,
+        y=forecast_test.values * 100,
         mode='lines',
-        name='95% Confidence Interval',
-        line=dict(width=0),
-        fill='tonexty',
-        fillcolor='rgba(255, 165, 0, 0.2)',
-        hovertemplate='Date: %{x}<br>Lower: %{y:.3f}%<extra></extra>'
-    ))
-    
-    # Forecast mean
-    fig.add_trace(go.Scatter(
-        x=future_dates,
-        y=forecast.values * 100,  # Convert to percentage
-        mode='lines+markers',
-        name='Forecast',
-        line=dict(color='orange', width=3, dash='dash'),
-        marker=dict(size=8, color='orange', symbol='diamond'),
+        name='Forecast (OOS)',
+        line=dict(color='orange', width=2, dash='dash'),
         hovertemplate='Date: %{x}<br>Forecast: %{y:.3f}%<extra></extra>'
     ))
     
+    # Add vertical line at train/test split
+    fig.add_vline(x=split_date, line_dash="dot", line_color="red", 
+                  annotation_text="Train/Test Split", annotation_position="top")
+    
     # Zero line
-    fig.add_hline(y=0, line_dash="dot", line_color="red", opacity=0.5)
+    fig.add_hline(y=0, line_dash="dot", line_color="gray", opacity=0.5)
     
     fig.update_layout(
         title=dict(
-            text=f'{metal_choice.title()} Returns Forecast - ARMA({best_p},{best_q})',
+            text=f'{metal_choice.title()} ARIMA({best_p},0,{best_q}) - Out-of-Sample Forecast',
             font=dict(size=18, color='#262730')
         ),
         xaxis_title='Date',
@@ -699,37 +707,47 @@ elif model_choice == 'ARIMA Forecasting':
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # Forecast table
-    st.markdown("### 📋 Detailed Forecast")
+    # Forecast table - Actual vs Forecast comparison
+    st.markdown("### 📋 Forecast vs Actual Comparison")
     
+    # Show last 20 days of test period
+    display_days = min(20, len(test))
     forecast_df = pd.DataFrame({
-        'Date': future_dates.strftime('%Y-%m-%d'),
-        'Day': range(1, forecast_days + 1),
-        'Predicted Return (%)': (forecast.values * 100).round(4)
+        'Date': test.index[-display_days:].strftime('%Y-%m-%d'),
+        'Actual Return (%)': (test.values[-display_days:] * 100).round(4),
+        'Forecast Return (%)': (forecast_test.values[-display_days:] * 100).round(4),
+        'Forecast Error (%)': ((test.values[-display_days:] - forecast_test.values[-display_days:]) * 100).round(4)
     })
     
-    # Color code the returns
-    def color_forecast_returns(val):
-        if isinstance(val, (int, float)):
-            color = '#d4edda' if val > 0 else '#f8d7da' if val < 0 else 'white'
-            return f'background-color: {color}; font-weight: bold'
-        return ''
+    # Color code errors
+    def color_errors(val):
+        if abs(val) < 0.5:
+            return 'background-color: #d4edda'  # Small error - green
+        elif abs(val) < 1.5:
+            return 'background-color: #fff3cd'  # Medium error - yellow
+        else:
+            return 'background-color: #f8d7da'  # Large error - red
     
-    styled_forecast = forecast_df.style.applymap(color_forecast_returns, subset=['Predicted Return (%)'])
+    styled_forecast = forecast_df.style.applymap(color_errors, subset=['Forecast Error (%)'])
     st.dataframe(styled_forecast, use_container_width=True, hide_index=True)
     
-    # Summary metrics
+    st.markdown(f"*Showing last {display_days} days of {len(test)} day test period*")
+    
+    # Summary metrics - OOS performance
     col1, col2, col3, col4 = st.columns(4)
-    avg_forecast = forecast.mean() * 100
+    avg_actual = test.mean() * 100
+    avg_forecast = forecast_test.mean() * 100
+    mae = np.abs(test.values - forecast_test.values).mean() * 100
+    rmse = np.sqrt(mse) * 100
+    
     with col1:
-        st.metric("📊 Average Forecast", f"{avg_forecast:.3f}%")
+        st.metric("📊 Avg Actual Return", f"{avg_actual:.3f}%")
     with col2:
-        st.metric("📈 Max Forecast", f"{(forecast.max() * 100):.3f}%")
+        st.metric("📈 Avg Forecast Return", f"{avg_forecast:.3f}%")
     with col3:
-        st.metric("📉 Min Forecast", f"{(forecast.min() * 100):.3f}%")
+        st.metric("📉 MAE", f"{mae:.3f}%", help="Mean Absolute Error")
     with col4:
-        cumulative = ((1 + forecast).prod() - 1) * 100
-        st.metric("🎯 Cumulative Return", f"{cumulative:.3f}%")
+        st.metric("🎯 RMSE", f"{rmse:.3f}%", help="Root Mean Squared Error")
 
 else:  # GARCH
     st.markdown(f"## ⚡ GARCH Volatility Analysis: {metal_choice.upper()}")
@@ -894,3 +912,4 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
+
