@@ -408,6 +408,25 @@ if model_choice == 'OLS Regression':
                 return ['background-color: #f8d7da'] * len(row)
         
         styled_df = coef_df.style.apply(highlight_significant, axis=1)
+        
+        # Force light header styling
+        styled_df = styled_df.set_table_styles([
+            {'selector': 'thead th', 'props': [
+                ('background-color', '#f0f2f6 !important'),
+                ('color', '#262730 !important'),
+                ('font-weight', 'bold'),
+                ('border', '1px solid #ddd')
+            ]},
+            {'selector': 'tbody td', 'props': [
+                ('color', '#262730 !important'),
+                ('border', '1px solid #ddd')
+            ]},
+            {'selector': 'th', 'props': [
+                ('background-color', '#f0f2f6 !important'),
+                ('color', '#262730 !important')
+            ]}
+        ])
+        
         st.dataframe(styled_df, use_container_width=True, hide_index=True)
     
     with col2:
@@ -849,3 +868,4 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
+
