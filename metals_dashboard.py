@@ -100,24 +100,41 @@ st.markdown("""
         border-color: #ddd !important;
     }
     
-    /* Table body cells */
+    /* Table body cells - FORCE BLACK TEXT ON ALL CELLS */
     .dataframe tbody tr td,
+    .dataframe tbody td,
     .dataframe td,
     tbody,
     tbody tr,
     tbody tr td,
+    tbody td,
     td,
     .stDataFrame tbody,
     .stDataFrame tbody tr,
     .stDataFrame tbody tr td,
+    .stDataFrame tbody td,
+    .stDataFrame td,
     [data-testid="stDataFrame"] tbody,
     [data-testid="stDataFrame"] tbody tr,
     [data-testid="stDataFrame"] tbody tr td,
-    [data-testid="stDataFrame"] td {
+    [data-testid="stDataFrame"] tbody td,
+    [data-testid="stDataFrame"] td,
+    table tbody td,
+    table td {
         background-color: white !important;
         background: white !important;
-        color: #262730 !important;
+        color: black !important;
         border-color: #ddd !important;
+    }
+    
+    /* Extra aggressive - force any span or div inside table cells to be black */
+    td span,
+    td div,
+    tbody span,
+    tbody div,
+    .dataframe tbody span,
+    .dataframe tbody div {
+        color: black !important;
     }
     
     /* Info/Warning/Success boxes */
@@ -868,4 +885,3 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
-
