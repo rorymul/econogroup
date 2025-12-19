@@ -18,6 +18,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from statsmodels.tsa.arima.model import ARIMA
 from arch import arch_model
+from sklearn.metrics import mean_squared_error
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -624,7 +625,6 @@ elif model_choice == 'ARIMA Forecasting':
     forecast_test.index = test.index
     
     # Calculate MSE for out-of-sample evaluation
-    from sklearn.metrics import mean_squared_error
     eval_df = pd.concat([test, forecast_test], axis=1)
     eval_df.columns = ["actual", "forecast"]
     eval_df = eval_df.dropna()
@@ -912,4 +912,3 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
-
