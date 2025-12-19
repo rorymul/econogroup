@@ -531,7 +531,6 @@ elif model_choice == 'ARIMA Forecasting':
     
     # Prepare data
     returns = df[f'{metal_choice}_lr'].dropna()
-    returns = returns.asfreq('B').dropna()
     
     # Check if we have data
     if len(returns) < 100:
