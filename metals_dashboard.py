@@ -638,11 +638,6 @@ elif model_choice == 'ARIMA Forecasting':
     with col4:
         cumulative = ((1 + forecast).prod() - 1) * 100
         st.metric("🎯 Cumulative Return", f"{cumulative:.3f}%")
-    
-    if avg_forecast > 0:
-        st.success(f"📈 **Bullish Signal!** Model predicts positive returns averaging {avg_forecast:.3f}% per day")
-    else:
-        st.warning(f"📉 **Bearish Signal!** Model predicts negative returns averaging {avg_forecast:.3f}% per day")
 
 else:  # GARCH
     st.markdown(f"## ⚡ GARCH Volatility Analysis: {metal_choice.upper()}")
@@ -790,11 +785,6 @@ else:  # GARCH
         st.metric("Expected Change", f"{change:+.1f}%")
     with col4:
         st.metric("Annual Vol (252d)", f"{current_vol * np.sqrt(252):.2f}%")
-    
-    if avg_forecast_vol > current_vol:
-        st.warning("⚠️ **Volatility Expected to INCREASE** - Higher risk ahead!")
-    else:
-        st.success("✅ **Volatility Expected to DECREASE** - Market calming down!")
 
 # Footer
 st.markdown("---")
