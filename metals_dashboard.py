@@ -846,3 +846,4 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
+
