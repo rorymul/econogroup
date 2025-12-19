@@ -32,23 +32,45 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Add meta tag to force light color scheme
+st.markdown("""
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light">
+""", unsafe_allow_html=True)
+
 # Custom CSS
 st.markdown("""
     <style>
-    /* FORCE LIGHT MODE - Override everything */
+    /* FORCE LIGHT MODE - Override everything including mobile */
     :root {
         color-scheme: light only !important;
+        -webkit-color-scheme: light only !important;
     }
     
-    /* Override system preferences */
+    /* Override system preferences for ALL devices */
     @media (prefers-color-scheme: dark) {
         :root {
             color-scheme: light !important;
+            -webkit-color-scheme: light !important;
+        }
+        
+        body, html {
+            background-color: white !important;
+            color: #262730 !important;
         }
     }
     
+    /* Force body and html to be white */
+    body, html {
+        background-color: white !important;
+        color: #262730 !important;
+    }
+    
     /* Main containers */
-    [data-testid="stAppViewContainer"] {
+    [data-testid="stAppViewContainer"],
+    .stApp,
+    .main,
+    section {
         background-color: white !important;
         color: #262730 !important;
     }
@@ -62,12 +84,12 @@ st.markdown("""
     }
     
     .main {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: #262730 !important;
     }
     
     /* Force all text to be dark */
-    .stMarkdown, .stText, p, span, div, h1, h2, h3, h4, h5, h6, label {
+    .stMarkdown, .stText, p, span, div, h1, h2, h3, h4, h5, h6, label, li, a {
         color: #262730 !important;
     }
     
@@ -75,7 +97,12 @@ st.markdown("""
     [data-testid="stDataFrame"], 
     [data-testid="stTable"],
     .dataframe,
-    table {
+    table,
+    thead,
+    tbody,
+    tr,
+    td,
+    th {
         background-color: white !important;
         color: #262730 !important;
     }
@@ -90,16 +117,25 @@ st.markdown("""
         color: #262730 !important;
     }
     
-    /* Plotly charts - force light background */
+    /* Plotly charts - force light background aggressively */
     .js-plotly-plot,
     .plotly,
-    .plot-container {
+    .plot-container,
+    .plotly .svg-container,
+    .plotly .main-svg {
         background-color: white !important;
+        background: white !important;
+    }
+    
+    /* Force plotly plot areas */
+    .plotly .bg {
+        fill: white !important;
     }
     
     /* Info/Warning/Success boxes */
     [data-testid="stAlert"],
-    .stAlert {
+    .stAlert,
+    [data-testid="stNotification"] {
         color: #262730 !important;
     }
     
@@ -111,7 +147,8 @@ st.markdown("""
     }
     
     [data-testid="stMetricLabel"],
-    [data-testid="stMetricValue"] {
+    [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"] {
         color: #262730 !important;
     }
     
@@ -138,8 +175,16 @@ st.markdown("""
     /* Selectbox, slider, and other inputs */
     [data-baseweb="select"],
     [data-testid="stSelectbox"],
-    input, select, textarea {
+    input, select, textarea,
+    [data-baseweb="input"],
+    [role="listbox"],
+    [role="option"] {
         background-color: white !important;
+        color: #262730 !important;
+    }
+    
+    /* Radio buttons */
+    [data-testid="stRadio"] label {
         color: #262730 !important;
     }
     
@@ -152,6 +197,18 @@ st.markdown("""
     code, pre {
         background-color: #f0f2f6 !important;
         color: #262730 !important;
+    }
+    
+    /* Mobile-specific overrides for iOS Safari */
+    @supports (-webkit-touch-callout: none) {
+        body, html, * {
+            background-color: white !important;
+            color: #262730 !important;
+        }
+        
+        [data-testid="stAppViewContainer"] {
+            background: white !important;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -795,3 +852,4 @@ st.markdown("""
         <p><em>For educational purposes only - Not financial advice</em></p>
     </div>
 """, unsafe_allow_html=True)
+
