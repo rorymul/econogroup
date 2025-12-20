@@ -345,7 +345,7 @@ model_choice = st.sidebar.radio(
 # Main content
 if model_choice == 'OLS Regression':
     st.markdown(f"## 📊 OLS Regression Analysis: {metal_choice.upper()}")
-    st.info("💡 **Objective:** Analyze how this metal responds to market stress indicators (VIX, USD, Oil, Yields)")
+    st.info("💡 **Objective:** Analyse how this metal responds to market stress indicators (VIX, USD, Oil, Yields)")
     
     # Prepare data
     data_metal = df[[f'{metal_choice}_lr', 'vix_lr', 'usd_index_lr', 'wti_oil_lr', 
@@ -644,7 +644,7 @@ elif model_choice == 'ARIMA Forecasting':
     
     st.markdown("---")
     
-    # Forecast visualization - Out-of-Sample
+    # Forecast visualisation - Out-of-Sample
     st.markdown("### 📊 Out-of-Sample Forecast vs Actual")
     
     fig = go.Figure()
@@ -659,12 +659,12 @@ elif model_choice == 'ARIMA Forecasting':
         hovertemplate='Date: %{x}<br>Return: %{y:.3f}%<extra></extra>'
     ))
     
-    # Actual test data (realized returns)
+    # Actual test data (realised returns)
     fig.add_trace(go.Scatter(
         x=test.index,
         y=test.values * 100,
         mode='lines',
-        name='Actual (Realized)',
+        name='Actual (Realised)',
         line=dict(color='green', width=2),
         hovertemplate='Date: %{x}<br>Actual: %{y:.3f}%<extra></extra>'
     ))
@@ -827,7 +827,7 @@ else:  # GARCH
     
     st.markdown("---")
     
-    # Volatility visualization
+    # Volatility visualisation
     st.markdown("### 📈 Volatility Analysis")
     
     cond_vol = garch_fitted.conditional_volatility
